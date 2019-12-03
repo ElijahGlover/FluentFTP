@@ -388,6 +388,15 @@ namespace FluentFTP {
 			stream.Client = this;
 			stream.ConnectTimeout = DataConnectionConnectTimeout;
 			stream.ReadTimeout = DataConnectionReadTimeout;
+
+#if !CORE14
+			// Delay connection to open data ports on slow connections
+			if (DataConnectionConnectDelay > 0)
+			{
+				FtpTrace.WriteLine("Status:   Delaying Data Connection For " + DataConnectionConnectDelay + " ms");
+				Thread.Sleep(DataConnectionConnectDelay);
+			}
+#endif
 			Connect(stream, host, port, InternetProtocolVersions);
 			stream.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
 
@@ -520,6 +529,16 @@ namespace FluentFTP {
 			stream.Client = this;
 			stream.ConnectTimeout = DataConnectionConnectTimeout;
 			stream.ReadTimeout = DataConnectionReadTimeout;
+
+#if !CORE14
+			// Delay connection to open data ports on slow connections
+			if (DataConnectionConnectDelay > 0)
+			{
+				FtpTrace.WriteLine("Status:   Delaying Data Connection For " + DataConnectionConnectDelay + " ms");
+				Thread.Sleep(DataConnectionConnectDelay);
+			}
+#endif
+
 			await ConnectAsync(stream, host, port, InternetProtocolVersions, token);
 			stream.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
 

@@ -392,14 +392,28 @@ namespace FluentFTP {
 			set => m_dataConnectionConnectTimeout = value;
 		}
 
-		private int m_dataConnectionReadTimeout = 15000;
+#if !CORE14
+        private int m_dataConnectionConnectDelay = 1;
 
 		/// <summary>
-		/// Gets or sets the length of time in milliseconds the data channel
-		/// should wait for the server to send data. Default value is 
-		/// 15000 (15 seconds).
+		/// Gets or sets the connection delay when opening data stream connections in milliseconds.
+		/// Assists with tuning client connections when proxying through load balancers.
 		/// </summary>
-		public int DataConnectionReadTimeout {
+		public int DataConnectionConnectDelay
+		{
+			get => m_dataConnectionConnectDelay;
+			set => m_dataConnectionConnectDelay = value;
+		}
+#endif
+
+        private int m_dataConnectionReadTimeout = 15000;
+
+        /// <summary>
+        /// Gets or sets the length of time in milliseconds the data channel
+        /// should wait for the server to send data. Default value is 
+        /// 15000 (15 seconds).
+        /// </summary>
+        public int DataConnectionReadTimeout {
 			get => m_dataConnectionReadTimeout;
 			set => m_dataConnectionReadTimeout = value;
 		}
